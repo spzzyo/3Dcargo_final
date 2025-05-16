@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.bot_msg {
+  display: flex; 
+  justify-content: flex-start;
+}
+
+.user_msg {
+  display: flex; 
+  justify-content: flex-end;
+  
+}
