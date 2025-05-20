@@ -64,7 +64,7 @@ async function zoneDeterminer(currentZone: string, userMessage: string, lastBotR
         
         // //checking if adequate response received to previous question by some LLM 
 
-        // const apiUrl = `https://10.119.11.41:8080/response_interpretation?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
+        // const apiUrl = `http://10.119.11.41:8080/response_interpretation?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
         // const response = await fetch(apiUrl, {
         // method: "POST",
         // headers: { "Accept": "application/json" },
@@ -164,7 +164,7 @@ async function func_introduction (currentZone: string, userMessage: string, last
     }
     
 
-    const apiUrl = `https://10.119.11.41:8080/response_interpretation?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
+    const apiUrl = `http://10.119.11.41:8080/response_interpretation?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
     const response = await fetch(apiUrl, {
     method: "POST",
     headers: { "Accept": "application/json" },
@@ -225,7 +225,7 @@ async function func_dataCollectionMode (currentZone: string, userMessage: string
 
     else {
 
-        const apiUrl = `https://10.119.11.41:8080/dataCollectionMode?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
+        const apiUrl = `http://10.119.11.41:8080/dataCollectionMode?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
         const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Accept": "application/json" },
@@ -329,7 +329,7 @@ async function  func_vehicleTotalCount(currentZone: string, userMessage: string,
     
     else {
 
-        const apiUrl = `https://10.119.11.41:8080/vehicleCount?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
+        const apiUrl = `http://10.119.11.41:8080/vehicleCount?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
         const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Accept": "application/json" },
@@ -427,7 +427,7 @@ const sendVehicleDescription = async (message: string, length: number | null, br
       Vehicle_Quantity: quantity
     };
   
-    const description_apiUrl = `https://10.119.11.41:8080/vehicle_description_flow?query=${encodeURIComponent(message)}&data=${encodeURIComponent(JSON.stringify(data))}`;
+    const description_apiUrl = `http://10.119.11.41:8080/vehicle_description_flow?query=${encodeURIComponent(message)}&data=${encodeURIComponent(JSON.stringify(data))}`;
   
    
     const response = await fetch(description_apiUrl, {
@@ -621,7 +621,7 @@ async function  func_cargoDataInterpretation(currentZone: string, userMessage: s
 
 
     else {
-        const description_apiUrl = `https://10.119.11.41:8080/cargo_description_flow?query=${encodeURIComponent(userMessage)}`;
+        const description_apiUrl = `http://10.119.11.41:8080/cargo_description_flow?query=${encodeURIComponent(userMessage)}`;
   
    
         const response = await fetch(description_apiUrl, {
