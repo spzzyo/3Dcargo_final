@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { stringify } from "querystring";
+
 
 
 
@@ -222,7 +222,6 @@ async function func_dataCollectionMode (currentZone: string, userMessage: string
 
     }
 
-
     else {
 
         const apiUrl = `http://10.119.11.41:8080/dataCollectionMode?prev_bot_question=${encodeURIComponent(lastBotResponse)}&user_message=${encodeURIComponent(userMessage)}`;
@@ -252,36 +251,28 @@ async function func_dataCollectionMode (currentZone: string, userMessage: string
                 
             }
             else if (check.description_mode === "vehicle_database_reference"){
-                
-
-
                 const res_truck = await fetch('http://localhost:3000/api/truck', {
                     method: 'GET',
-                  });
-      
+                  });    
                 const allTrucks = await res_truck.json();
                 const resp : Response = {
                     replyBot: check.message,
                     nextZone : "zone_cargoDataInterpretation",
                     zone_retained : true,
-                    extraData: allTrucks
-
+                    extraData: { "TRUCKS": true}
                 }
-        
                 return resp; 
-
             }
-            else {
+
+            else 
+            {
                 const resp : Response = {
                     replyBot: "Please try again later.",
                     nextZone : "zone_ambiguous",
                     zone_retained : false
-                }
-        
+                }        
                 return resp; 
-            }
-            
-            
+            }            
         }
 
         else if (check.status === "inadequate"){
@@ -290,7 +281,6 @@ async function func_dataCollectionMode (currentZone: string, userMessage: string
                 nextZone : "zone_ambiguous",
                 zone_retained : false
             }
-    
             return resp;
         }
         else{
@@ -299,7 +289,6 @@ async function func_dataCollectionMode (currentZone: string, userMessage: string
                 nextZone : "zone_ambiguous",
                 zone_retained : false
             }
-    
             return resp; 
         } 
         
@@ -481,15 +470,13 @@ const sendVehicleDescription = async (message: string, length: number | null, br
 async function  func_vehicleDataInterpretation(currentZone: string, userMessage: string, lastBotResponse: string, isZoneInitiator: boolean, threadId : string, vehicleCount: number){
     if (isZoneInitiator == true){
         const resp : Response = {
-            replyBot: "Please help us with describing each of your vehicles one by one. Lets begin with the first one - Please provide its dimensions, weight capacity and the number of units you have of this type.",
+            replyBot: "Please help us with describing each of your vehicles one by one. Lets begin with the first one - Please provide its dimensions, weight capacity and the number of units you have in this fleet.",
             nextZone : "zone_vehicleDataInterpretation",
             zone_retained : false,
             extraData: {vehicleCount}
         }
         return resp;
-    }
-
-    
+    }    
     else {
         if (vehicleCount > 0){
 
@@ -518,16 +505,12 @@ const truckIds = data?.trucks?.map((id: string | number) => String(id)) ?? [];
         
         if (api_response.status === "incomplete") 
             {
-
                 const resp : Response = {
                     replyBot: api_response.response,
                     nextZone : "zone_vehicleDataInterpretation",
                     zone_retained : true,
                     extraData: {"vehicleCount":vehicleCount }
                 }
-
-               
-        
                 return resp;
         }
         else if (api_response.status === "complete"){
@@ -538,10 +521,8 @@ const truckIds = data?.trucks?.map((id: string | number) => String(id)) ?? [];
                 const resp : Response = {
                     replyBot:  api_response.response + nextQ.replyBot ,
                     nextZone : "zone_cargoDataInterpretation",
-                    zone_retained : true,
-                        
+                    zone_retained : true,       
                 }
-    
                 return resp;
 
             }
@@ -549,20 +530,13 @@ const truckIds = data?.trucks?.map((id: string | number) => String(id)) ?? [];
             else {
 
                 const resp : Response = {
-                    replyBot:  api_response.response + " Similarly, describe the next vehcile fleet.  Please provide its dimensions, weight capacity and the number of units you have in this fleet.",
+                    replyBot:  api_response.response + " Similarly, describe the next vehcile fleet. Please provide its dimensions, weight capacity and the number of units you have in this fleet.",
                     nextZone : "zone_vehicleDataInterpretation",
                     zone_retained : true,
-                    extraData: {"vehicleCount":vehicleCount-1 }
-
-                        
+                    extraData: {"vehicleCount":vehicleCount-1 }       
                 }
-    
                 return resp;
-
-            }
-
-
-            
+            }            
         }
 
         else {
@@ -571,26 +545,16 @@ const truckIds = data?.trucks?.map((id: string | number) => String(id)) ?? [];
                 nextZone : "zone_ambiguous",
                 zone_retained : false
             }
-    
             return resp; 
-
         }
-
-        
-        
-
     }
 
     else {
-        
-        
         const nextQ: Response = await func_cargoDataInterpretation("zone_cargoDataInterpretation", "", "", true,threadId)
-        
         const resp : Response = {
             replyBot: nextQ.replyBot ,
             nextZone : "zone_cargoDataInterpretation",
             zone_retained : true,
-                
         }
     
         return resp;

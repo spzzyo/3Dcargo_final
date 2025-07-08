@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 import { IUserData } from "@/types/c_userData";
 import { IMyTruck } from "@/types/c_truck";
 import { IMyCargo } from "@/types/c_cargo";
+import ObjViewer from "./objViewer";
 
+import Image from "next/image";
 
 const DataInterpreted = () => {
   const { selectedThreadId } = useUserContext();
@@ -186,7 +188,7 @@ const DataInterpreted = () => {
     
   
     try {
-      const response = await fetch("http://10.119.11.41:8000/cargoDistribution", {
+      const response = await fetch("http://10.119.11.41:8081/cargoDistribution", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -264,10 +266,21 @@ const DataInterpreted = () => {
                 intData.trucks.map((truckId, index) => {
                   const truck = truckDetails[truckId];
                   return truck ? (
+              
+
                     <div
-                      key={index}
-                      className="bg-gray-800 text-gray-200 px-6 py-3 rounded-lg shadow-lg transition-all hover:shadow-blue-500/50"
-                    >
+                    key={index}
+                    className="relative group " // gives vertical space for hover content above
+                  >
+                    {/* Hover card placed ABOVE the main card */}
+                    <div className="absolute bottom-full mb-2 left-0 w-full flex justify-center z-20 hidden group-hover:flex">
+                      <div className="w-full bg-gray-300 rounded-lg p-2 shadow-2xl">
+                        <ObjViewer url={`/model_objs/truck${index+1}.obj`} />
+                      </div>
+                    </div>
+
+                    {/* Main truck card */}
+                    <div className="bg-gray-800 text-gray-200 px-6 py-3 rounded-lg shadow-lg transition-all group-hover:shadow-blue-500/50">
                       <h3 className="font-bold text-sm">{`Vehicle-${truck.name}`}</h3>
                       <p className="text-xs">
                         LBH: {truck.length}m x {truck.breadth}m x {truck.height}m
@@ -276,6 +289,9 @@ const DataInterpreted = () => {
                         Quantity: {truck.quantity} | Capacity: {truck.wt_capacity}kg
                       </p>
                     </div>
+                  </div>
+
+
                   ) : (
                     <p key={index} className="text-gray-500">{truckId}</p>
                   );
@@ -294,17 +310,40 @@ const DataInterpreted = () => {
                 intData.cargoBoxes.map((cargoId, index) => {
                   const cargo = cargoDetails[cargoId];
                   return cargo ? (
-                    <div
-                      key={index}
-                      className="bg-gray-800 text-gray-200 px-6 py-3 rounded-lg shadow-lg transition-all hover:shadow-green-500/50"
-                    >
-                      <h3 className="font-bold text-sm">{`Cargo type-${index + 1}`}</h3>
-                      <p className="text-xs">Quantity: {cargo.quantity}</p>
-                      <p className="text-xs">
-                        LBH: {cargo.length}m x {cargo.breadth}m x {cargo.height}m
-                      </p>
-                      <p className="text-xs">Weight: {cargo.weight}kg</p>
+                    // <div
+                    //   key={index}
+                    //   className="bg-gray-800 text-gray-200 px-6 py-3 rounded-lg shadow-lg transition-all hover:shadow-green-500/50"
+                    // >
+                    //   <h3 className="font-bold text-sm">{`Cargo type-${index + 1}`}</h3>
+                    //   <p className="text-xs">Quantity: {cargo.quantity}</p>
+                    //   <p className="text-xs">
+                    //     LBH: {cargo.length}m x {cargo.breadth}m x {cargo.height}m
+                    //   </p>
+                    //   <p className="text-xs">Weight: {cargo.weight}kg</p>
+                    // </div>
+
+
+                      <div
+                    key={index}
+                    className="relative group " // gives vertical space for hover content above
+                  >
+                    {/* Hover card placed ABOVE the main card */}
+                    <div className="absolute bottom-full mb-2 left-0 w-full flex justify-center z-20 hidden group-hover:flex">
+                      <div className="w-full bg-gray-300 rounded-lg p-2 shadow-2xl">
+                        {/* <ObjViewer url =  /> */}
+                      </div>
                     </div>
+
+                    {/* Main truck card */}
+                    <div className="bg-gray-800 text-gray-200 px-6 py-3 rounded-lg shadow-lg transition-all group-hover:shadow-blue-500/50">
+                        <h3 className="font-bold text-sm">{`Cargo type-${index + 1}`}</h3>
+                       <p className="text-xs">Quantity: {cargo.quantity}</p>
+                       <p className="text-xs">
+                         LBH: {cargo.length}m x {cargo.breadth}m x {cargo.height}m
+                       </p>
+                       <p className="text-xs">Weight: {cargo.weight}kg</p>
+                    </div>
+                  </div>
                   ) : (
                     <p key={index} className="text-gray-500">{cargoId}</p>
                   );
@@ -315,7 +354,11 @@ const DataInterpreted = () => {
             </div>
           </div>
         </div>
+
+
       </div>
+
+     
   
       {/* Submit Button */}
       <div className="box relative">

@@ -17,7 +17,7 @@ const PlayUnity: FC = () => {
       const numberOfTrucks = Number(sessionStorage.getItem("numberOfTrucks"));
 
       try {
-        const response = await fetch("http://10.119.11.41:8000/completeOutputData", {
+        const response = await fetch("http://10.119.11.41:8081/completeOutputData", {
           method: "GET",
         });
 

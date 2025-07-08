@@ -90,7 +90,6 @@ async function getBotReply(inputMessage: string, threadId: string, currentZone :
     
     const raw_data = await res.json();
     const data: Response = raw_data;
-    console.log('what is the error bitch', raw_data);
     console.log(data);
     const lastBotResponse_client : string = data.replyBot;
     const isZoneInitiator_client : boolean = !data.zone_retained;
@@ -100,8 +99,6 @@ async function getBotReply(inputMessage: string, threadId: string, currentZone :
     console.log("data from start api is", data)
 
     await saveMessageFunc({threadID:threadId, role:"assistant", content:lastBotResponse_client, msg_function:"bot_reply"});
-
-
     return {lastBotResponse_client, isZoneInitiator_client, currentZone_client, extraData_client};
 
 
@@ -237,6 +234,8 @@ async function getBotReply(inputMessage: string, threadId: string, currentZone :
             extraData
           );
 
+          
+
           // setLastBotResponse(lastBotResponse_client);
           if (lastBotResponse_client !== undefined) {
           setLastBotResponse(lastBotResponse_client);
@@ -255,6 +254,16 @@ async function getBotReply(inputMessage: string, threadId: string, currentZone :
             setVehicleCount(maybeCount);
           }
 
+          const maybeTrucks = extraData_client?.TRUCKS ; 
+          if (maybeTrucks == true){
+            console.log("OHHEY TRUCKS TRUE")
+          } 
+          else{
+             console.log("OHHEY TRUCKS FALSE")
+          }
+      
+          
+
 
           
 
@@ -271,7 +280,6 @@ async function getBotReply(inputMessage: string, threadId: string, currentZone :
       console.error("Error saving message:", error);
     }
   };
-
 
 
 
